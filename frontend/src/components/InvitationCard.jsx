@@ -28,7 +28,7 @@ With warm regards,
 
   // Filter celebration highlights (hide completely if empty)
   const highlights = Array.isArray(event?.highlights)
-    ? event.highlights.filter((h) => h && (h.title?.trim() || h.description?.trim()))
+    ? event.highlights.filter((h) => h && h.title?.trim())
     : [];
 
   return (

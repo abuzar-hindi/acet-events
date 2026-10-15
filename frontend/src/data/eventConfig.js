@@ -60,31 +60,23 @@ ACET College, Aligarh`,
   // Initial editable thank-you message
   thankYouMessage: `Your signature has been received with gratitude. We look forward to sharing a wonderful evening of music, culture, and togetherness with you.`,
 
-  // Four editable event highlights
+  // Celebration highlights (organizer can add/edit/remove)
   highlights: [
     {
       id: 'highlight-1',
-      title: 'Traditional Garba & Dandiya',
-      description: 'Energetic Raas Garba beats, traditional Dandiya sticks, and community celebration under festive lights.',
-      icon: 'dandiya',
+      title: 'Traditional Raas Garba & Dandiya',
     },
     {
       id: 'highlight-2',
-      title: 'Cultural Performances',
-      description: 'Captivating musical and dance presentations by talented student artists celebrating Indian heritage.',
-      icon: 'sparkles',
+      title: 'Live Gujarati & Bollywood Folk Beats',
     },
     {
       id: 'highlight-3',
-      title: 'Music & Celebration',
-      description: 'Live Gujarati & Bollywood folk music, rhythmic dhol beats, and an unforgettable evening of festivities.',
-      icon: 'music',
+      title: 'Cultural Student Presentations',
     },
     {
       id: 'highlight-4',
-      title: 'An Evening of Togetherness',
-      description: 'A vibrant gathering of esteemed faculty members, staff, and students sharing joy and cultural pride.',
-      icon: 'heart',
+      title: 'An Evening of Togetherness & Joy',
     },
   ],
 };
