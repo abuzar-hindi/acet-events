@@ -11,5 +11,8 @@
   },
   "keywords": [],
   "author": "ACET Organizers",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^18.0.8"
+  }
 }
