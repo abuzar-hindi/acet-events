@@ -1,0 +1,459 @@
+@import url('https://fonts.googleapis.com/css2?family=Yatra+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Mukta:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base resets ─────────────────────────────────── */
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Mukta', 'Inter', system-ui, sans-serif;
+    color: #1a0050;
+    background-color: #0c0022;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+/* ── Component layer ─────────────────────────────── */
+@layer components {
+
+  /* ─ Primary button (saffron orange with gold sheen) ─ */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    font-family: 'Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #ff6f00 0%, #ff9232 50%, #e65100 100%);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(255, 111, 0, 0.40);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #ff801a 0%, #ff6f00 100%);
+    box-shadow: 0 0 28px rgba(255, 111, 0, 0.65);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  /* ─ Gold outlined button ─ */
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+    font-family: 'Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    background: rgba(212, 160, 23, 0.08);
+    color: #ffd54f;
+    border: 1.5px solid #d4a017;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-gold:hover {
+    background: #d4a017;
+    color: #1a0050;
+    box-shadow: 0 0 24px rgba(212, 160, 23, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .btn-gold:active {
+    transform: scale(0.97);
+  }
+
+  /* ─ Rani pink button ─ */
+  .btn-rani {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2.25rem;
+    border-radius: 9999px;
+    font-family: 'Mukta', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(233, 30, 99, 0.45);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-rani:hover {
+    background: linear-gradient(135deg, #ec407a 0%, #d81b60 100%);
+    box-shadow: 0 0 28px rgba(233, 30, 99, 0.65);
+    transform: translateY(-1px);
+  }
+
+  .btn-rani:active {
+    transform: scale(0.97);
+  }
+
+  /* Small button modifier */
+  .btn-sm {
+    padding: 0.45rem 1.25rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* ─ Faculty row ─ */
+  .faculty-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 0.85rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .faculty-row:hover {
+    background-color: rgba(255, 255, 255, 0.09);
+    border-color: rgba(212, 160, 23, 0.35);
+  }
+
+  /* ─ Festive input ─ */
+  .input-festive {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    font-family: 'Mukta', sans-serif;
+    font-size: 0.92rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    outline: none;
+  }
+
+  .input-festive::placeholder {
+    color: rgba(255, 255, 255, 0.40);
+  }
+
+  .input-festive:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(212, 160, 23, 0.70);
+    box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.18);
+  }
+
+  /* ─ Status Badges ─ */
+  .badge-signed {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 9999px;
+    font-family: 'Mukta', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background-color: rgba(16, 185, 129, 0.16);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.32);
+  }
+
+  .badge-pending {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 9999px;
+    font-family: 'Mukta', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background-color: rgba(255, 111, 0, 0.16);
+    color: #fb923c;
+    border: 1px solid rgba(255, 111, 0, 0.32);
+  }
+}
+
+/* ── Utility layer ───────────────────────────────── */
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #ffd54f 0%, #ffb300 40%, #d4a017 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-festive {
+    background: linear-gradient(135deg, #ffd54f 0%, #ff9232 35%, #ec407a 65%, #ce93d8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-festive-dark {
+    background: radial-gradient(ellipse at 20% 20%, #3d1070 0%, #1a0050 50%, #0d0030 100%);
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .font-devanagari {
+    font-family: 'Yatra One', 'Tiro Devanagari Hindi', 'Mukta', serif;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-mukta {
+    font-family: 'Mukta', sans-serif;
+  }
+}
+
+/* ── Custom scrollbar ────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0030;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4527a0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4a017;
+}
+
+/* ── Signature canvas ────────────────────────────── */
+.sig-canvas-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+  touch-action: none;
+}
+
+/* ── Mandala / ornament slow spin ───────────────── */
+.ornament-spin {
+  animation: ornamentSpin 40s linear infinite;
+}
+
+@keyframes ornamentSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Floating animation for diyas ───────────────── */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* ── Ambient glow pulse ─────────────────────────── */
+@keyframes pulseGlow {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.15;
+  }
+
+  50% {
+    transform: scale(1.12) translate(15px, -10px);
+    opacity: 0.25;
+  }
+
+  100% {
+    transform: scale(0.95) translate(-10px, 15px);
+    opacity: 0.18;
+  }
+}
+
+/* ── Celebratory Floating Confetti & Sparkles ──── */
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(0.65);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.95;
+  }
+
+  70% {
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translateY(-56vh) rotate(260deg) scale(1.15);
+    opacity: 0;
+  }
+}
+
+.animate-celebrate-particle {
+  animation: floatParticle 4s ease-in-out infinite;
+}
+
+@keyframes sparkleTwinkle {
+
+  0%,
+  100% {
+    transform: scale(0.75) rotate(0deg);
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.25) rotate(45deg);
+    opacity: 1;
+  }
+}
+
+.animate-twinkle {
+  animation: sparkleTwinkle 2.6s ease-in-out infinite;
+}
+
+/* ── Staged reveals for Thank You card ──────────── */
+@keyframes thankYouCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ornamentScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) rotate(-12deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes signatureDrawIn {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(6px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.anim-card-in {
+  animation: thankYouCardIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-ornament-in {
+  animation: ornamentScaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+.anim-sig-in {
+  animation: signatureDrawIn 0.75s ease-out 0.45s both;
+}
+
+/* ── Page and modal entrance animations ──────────── */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* ── Accessibility: Reduced motion preferences ───── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
