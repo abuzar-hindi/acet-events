@@ -132,33 +132,38 @@ export default function ThankYouPage() {
   }, []);
 
   useEffect(() => {
-    if (faculty) return; // Already have data from navigation state
+    // If we already have the signature data URL or the full invitation signatureData, skip fetching
+    if (faculty && (signatureDataURL || faculty.invitation?.signatureData)) return;
 
     if (!facultyId) {
-      setError('No faculty member ID provided.');
-      setLoading(false);
+      if (!faculty) {
+        setError('No faculty member ID provided.');
+        setLoading(false);
+      }
       return;
     }
 
     fetchFacultyById(facultyId)
       .then((data) => {
         if (!data) {
-          setError('Faculty member not found in the database.');
+          if (!faculty) setError('Faculty member not found in the database.');
         } else {
           setFaculty(data);
         }
       })
       .catch((err) => {
-        const msg =
-          err?.response?.status === 404
-            ? 'Faculty member record not found in the event database.'
-            : err?.response?.status === 400
-              ? 'Invalid faculty member ID format.'
-              : 'Unable to retrieve faculty invitation acknowledgment.';
-        setError(msg);
+        if (!faculty) {
+          const msg =
+            err?.response?.status === 404
+              ? 'Faculty member record not found in the event database.'
+              : err?.response?.status === 400
+                ? 'Invalid faculty member ID format.'
+                : 'Unable to retrieve faculty invitation acknowledgment.';
+          setError(msg);
+        }
       })
       .finally(() => setLoading(false));
-  }, [facultyId, faculty]);
+  }, [facultyId, faculty, signatureDataURL]);
 
   return (
     <FestiveBackground variant="ivory">

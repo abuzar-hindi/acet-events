@@ -47,12 +47,10 @@ export const defaultEventConfig = {
   heroImage: '/dandiya_hero.jpg',
   logoUrl: '', // Will fall back to official CollegeLogo placeholder
 
-  // Initial editable invitation message (as specified in requirements)
-  invitationMessage: `Respected Faculty Members,
+  // Initial editable invitation message
+  invitationMessage: `Respected Sir/Ma'am,
 
-With great pleasure, we invite you to join us for the Dandiya Celebration celebration at ACET College, Aligarh.
-
-Let us come together to celebrate Indian culture, music, and the joy of shared moments. Your presence will make this celebration even more special.
+We cordially invite you to grace our Dandiya Celebration with your esteemed presence. Join us for an enchanting evening of rhythm, tradition, and joyous festivities.
 
 With warm regards,
 ACET College, Aligarh`,

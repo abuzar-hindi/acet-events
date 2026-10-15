@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { RangoliBorder, CornerOrnament, DandiyaSticksSvg } from './Ornaments';
 import RichTextRenderer from './RichTextRenderer';
 import { getUploadUrl } from '../services/api';
@@ -102,6 +103,7 @@ export default function ThankYouCard({
   signatureDataURL,
   cardRef,
 }) {
+  const [imgFailed, setImgFailed] = useState(false);
   const thankYouMessage =
     eventConfig?.thankYouMessage ||
     'Your signature has been received with gratitude. We look forward to sharing a wonderful evening of music, culture, and togetherness with you.';
@@ -198,23 +200,40 @@ export default function ThankYouCard({
               border: '1.5px dashed rgba(212,160,23,0.40)',
             }}
           >
-            {signatureDataURL ? (
-              <img
-                src={signatureDataURL}
-                alt="Submitted Faculty Signature"
-                className="max-h-full max-w-full object-contain filter contrast-125"
-              />
-            ) : faculty?.invitation?.signatureFile ? (
-              <img
-                src={getUploadUrl(faculty.invitation.signatureFile)}
-                alt="Submitted Faculty Signature"
-                className="max-h-full max-w-full object-contain"
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center text-emerald-600 font-mukta text-xs">
-                <span className="font-bold">Digital Signature Verified</span>
-              </div>
-            )}
+            {(() => {
+              const sigSrc =
+                signatureDataURL ||
+                faculty?.invitation?.signatureData ||
+                (faculty?.invitation?.signatureFile
+                  ? getUploadUrl(faculty.invitation.signatureFile)
+                  : null);
+
+              if (sigSrc && !imgFailed) {
+                return (
+                  <img
+                    src={sigSrc}
+                    alt="Submitted Faculty Signature"
+                    className="max-h-full max-w-full object-contain filter contrast-125"
+                    onError={() => setImgFailed(true)}
+                  />
+                );
+              }
+
+              return (
+                <div className="flex flex-col items-center justify-center text-center px-3 py-1">
+                  <span
+                    className="text-xl sm:text-2xl font-bold text-[#3d1070] italic tracking-wide"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  >
+                    {faculty?.name || 'Faculty Member'}
+                  </span>
+                  <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-mukta font-bold mt-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-600 inline-block shadow-xs"></span>
+                    <span>✓ Digital Signature Verified</span>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
 

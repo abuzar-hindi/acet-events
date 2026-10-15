@@ -1,13 +1,24 @@
 import { useRef, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Eraser, CheckCircle2, Loader2, AlertCircle, PenTool } from 'lucide-react';
+import {
+  ArrowLeft,
+  Eraser,
+  CheckCircle2,
+  Loader2,
+  AlertCircle,
+  PenTool,
+  Calendar,
+  Clock,
+  MapPin,
+  GraduationCap,
+} from 'lucide-react';
 import SigCanvas from '../components/SignatureCanvas';
 import RichTextRenderer from '../components/RichTextRenderer';
 import FestiveBackground from '../components/FestiveBackground';
 import { CornerOrnament } from '../components/Ornaments';
 import { fetchFacultyById, submitSignature, fetchEvent, getUploadUrl } from '../services/api';
-import { getLocalEventConfig } from '../data/eventConfig';
-import logo from '../assets/logo.png'
+import { getLocalEventConfig, formatEventDate } from '../data/eventConfig';
+import logo from '../assets/logo.png';
 
 export default function SigningPage() {
   const { facultyId } = useParams();
@@ -90,8 +101,8 @@ export default function SigningPage() {
       const dataURL = canvasRef.current.toDataURL('image/png');
       const blob = dataURLtoBlob(dataURL);
 
-      // Submit to backend API
-      const result = await submitSignature(facultyId, blob);
+      // Submit to backend API with base64 dataURL backup
+      const result = await submitSignature(facultyId, blob, dataURL);
 
       // Strictly on success, navigate to thank-you page
       navigate(`/thank-you/${facultyId}`, {
@@ -110,6 +121,14 @@ export default function SigningPage() {
       setSubmitting(false);
     }
   };
+
+  const rawDate = eventConfig?.date || '2026-10-24';
+  const { formattedDate, dayName } = formatEventDate(rawDate);
+  const displayDate = dayName && dayName !== 'Date to be announced'
+    ? `${dayName}, ${formattedDate}`
+    : (formattedDate || '24 October 2026');
+  const time = eventConfig?.time || '6:30 PM onwards';
+  const venue = eventConfig?.venue || 'ACET College Campus, Aligarh';
 
   const invitationMessageToShow =
     faculty?.customMessage && faculty.customMessage.trim().length > 0
@@ -220,41 +239,94 @@ export default function SigningPage() {
                 <div className="px-6 sm:px-10 py-8 sm:py-10 text-center">
 
                   {/* 2. Distinctive Hindi & English Heading */}
-                  <p className="font-devanagari text-lg sm:text-xl font-bold text-[#e91e63] mb-8">
+                  <p className="font-devanagari text-lg sm:text-xl font-bold text-[#e91e63] mb-5">
                     हस्ताक्षर करें · आमंत्रण स्वीकारें
                   </p>
 
-                  {/* 3. Compact Faculty Identity Badge */}
-                  <div className="flex flex-col items-center justify-center gap-3 mb-8 text-left">
+                  {/* 3. Prominent Faculty Identity & Designation Badge */}
+                  <div className="flex flex-col items-center justify-center gap-3 mb-6 text-center">
                     {faculty.photo ? (
                       <img
                         src={getUploadUrl(faculty.photo)}
                         alt={faculty.name}
-                        className="w-24 rounded-full object-cover border-2 border-gold-400 shrink-0"
+                        className="w-24 h-24 rounded-full object-cover border-3 border-[#d4a017] shadow-md shrink-0"
                       />
                     ) : (
-                      <div></div>
+                      <div
+                        className="w-20 h-20 rounded-full flex items-center justify-center font-mukta font-bold text-2xl select-none shadow-md"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(255, 111, 0, 0.15) 0%, rgba(233, 30, 99, 0.15) 100%)',
+                          color: '#3d1070',
+                          border: '2px solid rgba(212, 160, 23, 0.50)',
+                        }}
+                      >
+                        {initials}
+                      </div>
                     )}
                     <div>
-                      <p className="font-mukta font-bold text-lg text-[#3d1070] leading">
+                      <h3 className="font-display font-bold text-xl sm:text-2xl text-[#3d1070] leading-tight">
                         {faculty.name}
-                      </p>
+                      </h3>
                       {faculty.designation && (
-                        <p className="font-mukta text-md text-center text-[#7e57c2]">
-                          {faculty.designation}
-                        </p>
+                        <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-50/90 border border-[#d4a017]/40 text-[#9a5500] text-xs sm:text-sm font-semibold mt-1 shadow-xs">
+                          <GraduationCap size={15} className="text-[#ff6f00]" />
+                          <span>{faculty.designation}</span>
+                        </div>
                       )}
                     </div>
                   </div>
 
-                  {/* 4. EXACT RULE: Only ONE Invitation Message Visible (Direct on surface) */}
-                  <div className="font-mukta text-sm sm:text-base leading-relaxed text-[#2d1a5e] mb-6 text-left max-w-lg mx-auto">
-                    <RichTextRenderer text={invitationMessageToShow} pClassName="mb-3 last:mb-0" />
+                  {/* 4. Event Date, Time & Venue Details Ribbon */}
+                  <div className="max-w-lg mx-auto mb-6 py-2.5 px-3 sm:px-4 rounded-xl border border-[#d4a017]/35 bg-[#fdfbf6]/90 flex flex-col sm:flex-row items-center justify-around gap-2 text-center font-mukta text-xs sm:text-sm shadow-sm">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar size={14} className="text-[#9a6800] shrink-0" />
+                      <div>
+                        <p className="text-[9px] uppercase font-bold tracking-wider text-[#9a6800] leading-none">
+                          Date &amp; Day
+                        </p>
+                        <p className="font-semibold text-xs text-[#3d1070] mt-0.5">
+                          {displayDate}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="hidden sm:block w-px h-6 bg-[#d4a017]/30" />
+
+                    <div className="flex items-center gap-1.5">
+                      <Clock size={14} className="text-[#e05000] shrink-0" />
+                      <div>
+                        <p className="text-[9px] uppercase font-bold tracking-wider text-[#e05000] leading-none">
+                          Time
+                        </p>
+                        <p className="font-semibold text-xs text-[#3d1070] mt-0.5">
+                          {time}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="hidden sm:block w-px h-6 bg-[#d4a017]/30" />
+
+                    <div className="flex items-center gap-1.5">
+                      <MapPin size={14} className="text-[#e91e63] shrink-0" />
+                      <div>
+                        <p className="text-[9px] uppercase font-bold tracking-wider text-[#e91e63] leading-none">
+                          Venue
+                        </p>
+                        <p className="font-semibold text-xs text-[#3d1070] mt-0.5">
+                          {venue}
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* 5. Short Signing Instruction */}
+                  {/* 5. Short & Impactful Invitation Message */}
+                  <div className="font-mukta text-sm sm:text-base leading-relaxed text-[#2d1a5e] mb-6 text-left max-w-lg mx-auto p-4 rounded-xl bg-white/70 border border-[#d4a017]/20 shadow-inner">
+                    <RichTextRenderer text={invitationMessageToShow} pClassName="mb-2 last:mb-0" />
+                  </div>
+
+                  {/* 6. Short Signing Instruction */}
                   <div className="flex items-center justify-center gap-2 mb-2 text-xs font-mukta font-semibold text-[#5e35b1]">
-                    <span>Please sign in the box below</span>
+                    <span>Please draw your signature in the box below</span>
                   </div>
 
                   {/* 6. Signature Canvas Box */}

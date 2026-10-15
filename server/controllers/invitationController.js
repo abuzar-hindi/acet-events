@@ -1,5 +1,6 @@
 // controllers/invitationController.js
 const path       = require('path');
+const fs         = require('fs');
 const mongoose   = require('mongoose');
 const Faculty    = require('../models/Faculty');
 const Invitation = require('../models/Invitation');
@@ -8,7 +9,7 @@ const Invitation = require('../models/Invitation');
 // Accepts multipart/form-data with facultyId + signature file
 const signInvitation = async (req, res) => {
   try {
-    const { facultyId } = req.body;
+    const { facultyId, signatureData: incomingSignatureData } = req.body;
 
     if (!facultyId) {
       return res.status(400).json({ message: 'facultyId is required.' });
@@ -32,18 +33,30 @@ const signInvitation = async (req, res) => {
       });
     }
 
-    if (!req.file) {
+    if (!req.file && !incomingSignatureData) {
       return res.status(400).json({ message: 'Signature image is required.' });
     }
 
     // Build relative path for storage reference
-    const signatureFile = `uploads/signatures/${req.file.filename}`;
+    const signatureFile = req.file ? `uploads/signatures/${req.file.filename}` : (existing?.signatureFile || null);
+
+    // Build base64 signature data backup
+    let signatureData = incomingSignatureData || null;
+    if (!signatureData && req.file && req.file.path) {
+      try {
+        const fileBuf = fs.readFileSync(req.file.path);
+        signatureData = `data:${req.file.mimetype || 'image/png'};base64,${fileBuf.toString('base64')}`;
+      } catch (readErr) {
+        console.warn('Could not read uploaded signature file for base64 backup:', readErr);
+      }
+    }
 
     let invitation;
     if (existing) {
       // Update pending → signed
       existing.status        = 'signed';
       existing.signatureFile = signatureFile;
+      if (signatureData) existing.signatureData = signatureData;
       existing.signedAt      = new Date();
       invitation = await existing.save();
     } else {
@@ -52,6 +65,7 @@ const signInvitation = async (req, res) => {
         faculty:       facultyId,
         status:        'signed',
         signatureFile,
+        signatureData,
         signedAt:      new Date(),
       });
     }

@@ -316,7 +316,10 @@ export default function OrganizerPage() {
             )}
 
             {activeTab === 'signatures' && (
-              <SignatureOverview facultyList={facultyList} />
+              <SignatureOverview
+                facultyList={facultyList}
+                onDeleteFaculty={handleDeleteFaculty}
+              />
             )}
 
           </div>

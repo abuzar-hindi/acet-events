@@ -1,12 +1,11 @@
-// src/components/organizer/SignatureOverview.jsx
-// Tab C: Signatures overview for organizers with metrics, timestamps, and signature preview modal
-
 import { useState } from 'react';
-import { CheckCircle2, Clock, Users, Eye, X, FileSignature } from 'lucide-react';
-import { getUploadUrl } from '../../services/api';
+import { CheckCircle2, Clock, Users, Eye, X, FileSignature, Trash2, Loader2 } from 'lucide-react';
+import { getUploadUrl, deleteFaculty } from '../../services/api';
 
-export default function SignatureOverview({ facultyList }) {
+export default function SignatureOverview({ facultyList, onDeleteFaculty }) {
   const [selectedSignature, setSelectedSignature] = useState(null);
+  const [deletingMember, setDeletingMember] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const total = facultyList.length;
   const signedList = facultyList.filter((f) => f.invitation?.status === 'signed');
@@ -14,6 +13,22 @@ export default function SignatureOverview({ facultyList }) {
   const signedCount = signedList.length;
   const pendingCount = pendingList.length;
   const percentage = total > 0 ? Math.round((signedCount / total) * 100) : 0;
+
+  const confirmDeleteMember = async () => {
+    if (!deletingMember) return;
+    setIsDeleting(true);
+    try {
+      await deleteFaculty(deletingMember._id);
+      if (onDeleteFaculty) {
+        onDeleteFaculty(deletingMember._id);
+      }
+      setDeletingMember(null);
+    } catch (err) {
+      alert(err?.response?.data?.message || 'Failed to delete faculty member.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <div className="space-y-6 text-left">
@@ -79,7 +94,7 @@ export default function SignatureOverview({ facultyList }) {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4 shrink-0">
+                <div className="flex items-center gap-3 shrink-0">
                   <span className="font-mukta text-xs text-[#9a5500] font-medium hidden sm:inline">
                     {f.invitation?.signedAt
                       ? new Date(f.invitation.signedAt).toLocaleString('en-IN', {
@@ -99,6 +114,15 @@ export default function SignatureOverview({ facultyList }) {
                     <Eye size={13} />
                     <span>View Signature</span>
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setDeletingMember(f)}
+                    className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-900 border border-rose-200 shadow-sm transition-colors cursor-pointer"
+                    title="Delete faculty member and signature"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
             ))}
@@ -113,7 +137,7 @@ export default function SignatureOverview({ facultyList }) {
       {/* ── Signature Preview Modal for Organizer ── */}
       {selectedSignature && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
           onClick={() => setSelectedSignature(null)}
         >
           <div
@@ -122,7 +146,7 @@ export default function SignatureOverview({ facultyList }) {
           >
             <button
               onClick={() => setSelectedSignature(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full text-[#7e57c2] hover:text-[#3d1070]"
+              className="absolute top-4 right-4 p-1.5 rounded-full text-[#7e57c2] hover:text-[#3d1070] cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -135,7 +159,13 @@ export default function SignatureOverview({ facultyList }) {
             </p>
 
             <div className="h-44 rounded-xl bg-[#fffefb] p-4 flex items-center justify-center mb-4 border border-[#d4a017]/30 shadow-inner">
-              {selectedSignature.invitation?.signatureFile ? (
+              {selectedSignature.invitation?.signatureData ? (
+                <img
+                  src={selectedSignature.invitation.signatureData}
+                  alt="Signature"
+                  className="max-h-full max-w-full object-contain filter contrast-125"
+                />
+              ) : selectedSignature.invitation?.signatureFile ? (
                 <img
                   src={getUploadUrl(selectedSignature.invitation.signatureFile)}
                   alt="Signature"
@@ -153,6 +183,59 @@ export default function SignatureOverview({ facultyList }) {
                 ? new Date(selectedSignature.invitation.signedAt).toLocaleString()
                 : 'Recorded electronically'}
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Delete Confirmation Modal ── */}
+      {deletingMember && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in"
+          onClick={() => !isDeleting && setDeletingMember(null)}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl p-6 relative bg-white border-2 border-rose-300 shadow-2xl text-center animate-slide-up font-mukta"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-rose-50 border border-rose-200 text-rose-600">
+              <Trash2 size={22} />
+            </div>
+
+            <h3 className="font-display font-bold text-lg text-[#3d1070] mb-1">
+              Delete Faculty Member?
+            </h3>
+            <p className="text-xs text-[#7e57c2] mb-4">
+              Are you sure you want to remove <strong className="text-[#3d1070] font-bold">{deletingMember.name}</strong> from the database? This will permanently delete their faculty record and signature.
+            </p>
+
+            <div className="flex items-center justify-center gap-3">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setDeletingMember(null)}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-[#5e35b1] hover:text-[#3d1070] bg-[#fbf4e4] hover:bg-[#faecd0] transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={confirmDeleteMember}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-md transition-colors cursor-pointer inline-flex items-center gap-1.5 disabled:opacity-75"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    <span>Deleting…</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={14} />
+                    <span>Delete Member</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

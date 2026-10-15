@@ -54,7 +54,10 @@ async function generateCardImage({ faculty, eventConfig, signatureDataURL }) {
   }
 
   // Preload actual submitted faculty signature
-  const sigSrc = signatureDataURL || (faculty?.invitation?.signatureFile ? getUploadUrl(faculty.invitation.signatureFile) : null);
+  const sigSrc =
+    signatureDataURL ||
+    faculty?.invitation?.signatureData ||
+    (faculty?.invitation?.signatureFile ? getUploadUrl(faculty.invitation.signatureFile) : null);
   let sigImg = null;
   if (sigSrc) {
     try {

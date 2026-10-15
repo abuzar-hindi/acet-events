@@ -11,17 +11,32 @@ const api = axios.create({
 
 // ── Organizer Session Storage ──────────────────────────────
 const TOKEN_KEY = 'acet_organizer_token_v1';
+const SITE_PASS_KEY = 'acet_site_pass_v1';
 
 export const getOrganizerToken = () => sessionStorage.getItem(TOKEN_KEY) || '';
 export const setOrganizerToken = (token) => sessionStorage.setItem(TOKEN_KEY, token);
-export const clearOrganizerToken = () => sessionStorage.removeItem(TOKEN_KEY);
+export const clearOrganizerToken = () => {
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(SITE_PASS_KEY);
+};
 
-// Attach organizer token to outgoing requests
+export const getSitePassword = () =>
+  sessionStorage.getItem(SITE_PASS_KEY) || localStorage.getItem(SITE_PASS_KEY) || '';
+export const setSitePassword = (pwd) => {
+  sessionStorage.setItem(SITE_PASS_KEY, pwd);
+  localStorage.setItem(SITE_PASS_KEY, pwd);
+};
+
+// Attach organizer token and site password to outgoing requests
 api.interceptors.request.use((config) => {
   const token = getOrganizerToken();
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
     config.headers['x-organizer-token'] = token;
+  }
+  const sitePass = getSitePassword();
+  if (sitePass) {
+    config.headers['x-organizer-password'] = sitePass;
   }
   return config;
 });
@@ -101,11 +116,17 @@ export const fetchStats = () =>
  * Submit a signature for a faculty member.
  * @param {string} facultyId      MongoDB ObjectId
  * @param {Blob}   signatureBlob  PNG blob from canvas
+ * @param {string} signatureDataURL Base64 dataURL from canvas
  */
-export const submitSignature = (facultyId, signatureBlob) => {
+export const submitSignature = (facultyId, signatureBlob, signatureDataURL) => {
   const form = new FormData();
   form.append('facultyId', facultyId);
-  form.append('signature', signatureBlob, 'signature.png');
+  if (signatureBlob) {
+    form.append('signature', signatureBlob, 'signature.png');
+  }
+  if (signatureDataURL) {
+    form.append('signatureData', signatureDataURL);
+  }
   return api.post('/invitations/sign', form, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }).then((r) => r.data);

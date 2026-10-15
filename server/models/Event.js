@@ -25,7 +25,7 @@ const eventSchema = new mongoose.Schema(
     logoUrl: { type: String, default: '' },
     invitationMessage: {
       type: String,
-      default: `Respected Faculty Members,\n\nWith great pleasure, we invite you to join us for the Dandiya Celebration at ACET College, Aligarh.\n\nLet us come together to celebrate Indian culture, music, and the joy of shared moments. Your presence will make this celebration even more special.\n\nWith warm regards,\nACET College, Aligarh`,
+      default: `Respected Sir/Ma'am,\n\nWe cordially invite you to grace our Dandiya Celebration with your esteemed presence. Join us for an enchanting evening of rhythm, tradition, and joyous festivities.\n\nWith warm regards,\nACET College, Aligarh`,
     },
     thankYouMessage: {
       type: String,

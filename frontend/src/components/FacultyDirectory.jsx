@@ -11,6 +11,7 @@ import FacultyRow from './FacultyRow';
 import SearchField from './SearchField';
 import ThreeDotMenu from './ThreeDotMenu';
 import AddMemberModal from './AddMemberModal';
+import EditMemberModal from './EditMemberModal';
 import { fetchFaculty } from '../services/api';
 import { RangoliBorder } from './Ornaments';
 
@@ -101,6 +102,7 @@ export default function FacultyDirectory() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [editingMember, setEditingMember] = useState(null);
 
   // Load faculty data from MongoDB API
   const loadFaculty = useCallback(async () => {
@@ -129,6 +131,12 @@ export default function FacultyDirectory() {
 
   const handleMemberAdded = (newMember) => {
     setFacultyList((prev) => [newMember, ...prev]);
+  };
+
+  const handleMemberUpdated = (updatedMember) => {
+    setFacultyList((prev) =>
+      prev.map((f) => (f._id === updatedMember._id ? updatedMember : f))
+    );
   };
 
   // Filtered by Search query (Faculty Name OR Designation)
@@ -248,7 +256,11 @@ export default function FacultyDirectory() {
                   />
                   <div className="space-y-2.5 mt-2">
                     {pendingFaculty.map((member) => (
-                      <FacultyRow key={member._id} faculty={member} />
+                      <FacultyRow
+                        key={member._id}
+                        faculty={member}
+                        onEdit={setEditingMember}
+                      />
                     ))}
                   </div>
                 </div>
@@ -264,7 +276,11 @@ export default function FacultyDirectory() {
                   />
                   <div className="space-y-2.5 mt-2">
                     {signedFaculty.map((member) => (
-                      <FacultyRow key={member._id} faculty={member} />
+                      <FacultyRow
+                        key={member._id}
+                        faculty={member}
+                        onEdit={setEditingMember}
+                      />
                     ))}
                   </div>
                 </div>
@@ -293,6 +309,15 @@ export default function FacultyDirectory() {
         <AddMemberModal
           onClose={() => setShowModal(false)}
           onAdded={handleMemberAdded}
+        />
+      )}
+
+      {/* Edit Member Modal */}
+      {editingMember && (
+        <EditMemberModal
+          faculty={editingMember}
+          onClose={() => setEditingMember(null)}
+          onUpdated={handleMemberUpdated}
         />
       )}
     </div>

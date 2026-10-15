@@ -14,6 +14,8 @@ export default function FacultyManagement({ facultyList, onUpdateFaculty, onAddF
   const [editForm, setEditForm] = useState(null);
   const [savingEdit, setSavingEdit] = useState(false);
   const [editError, setEditError] = useState('');
+  const [deletingMember, setDeletingMember] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Filtered members
   const filtered = (facultyList || []).filter((f) => {
@@ -73,19 +75,21 @@ export default function FacultyManagement({ facultyList, onUpdateFaculty, onAddF
     }
   };
 
-  const handleDelete = async (memberId, memberName) => {
-    if (!window.confirm(`Are you sure you want to remove "${memberName || 'this faculty member'}" from the database?`)) {
-      return;
-    }
+  const confirmDeleteMember = async () => {
+    if (!deletingMember) return;
+    setIsDeleting(true);
     try {
-      await deleteFaculty(memberId);
+      await deleteFaculty(deletingMember._id);
       if (onDeleteFaculty) {
-        onDeleteFaculty(memberId);
+        onDeleteFaculty(deletingMember._id);
       } else {
-        onUpdateFaculty(facultyList.filter((f) => f._id !== memberId));
+        onUpdateFaculty(facultyList.filter((f) => f._id !== deletingMember._id));
       }
+      setDeletingMember(null);
     } catch (err) {
       alert(err?.response?.data?.message || 'Failed to delete faculty member.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -358,7 +362,7 @@ export default function FacultyManagement({ facultyList, onUpdateFaculty, onAddF
 
                 <button
                   type="button"
-                  onClick={() => handleDelete(member._id, member.name)}
+                  onClick={() => setDeletingMember(member)}
                   className="p-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 hover:text-rose-900 border border-rose-200 shadow-sm transition-colors cursor-pointer"
                   title="Delete faculty member from database"
                 >
@@ -391,6 +395,59 @@ export default function FacultyManagement({ facultyList, onUpdateFaculty, onAddF
             setShowAddModal(false);
           }}
         />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deletingMember && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in"
+          onClick={() => !isDeleting && setDeletingMember(null)}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl p-6 relative bg-white border-2 border-rose-300 shadow-2xl text-center animate-slide-up font-mukta"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 bg-rose-50 border border-rose-200 text-rose-600">
+              <Trash2 size={22} />
+            </div>
+
+            <h3 className="font-display font-bold text-lg text-[#3d1070] mb-1">
+              Delete Faculty Member?
+            </h3>
+            <p className="text-xs text-[#7e57c2] mb-4">
+              Are you sure you want to remove <strong className="text-[#3d1070] font-bold">{deletingMember.name}</strong> from the database? This action will also delete any recorded invitation and signature.
+            </p>
+
+            <div className="flex items-center justify-center gap-3">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setDeletingMember(null)}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-[#5e35b1] hover:text-[#3d1070] bg-[#fbf4e4] hover:bg-[#faecd0] transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={confirmDeleteMember}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-md transition-colors cursor-pointer inline-flex items-center gap-1.5 disabled:opacity-75"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    <span>Deleting…</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={14} />
+                    <span>Delete Member</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

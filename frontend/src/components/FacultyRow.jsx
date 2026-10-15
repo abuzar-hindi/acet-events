@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, PenLine, ChevronRight } from 'lucide-react';
+import { CheckCircle2, PenLine, ChevronRight, Edit2 } from 'lucide-react';
 import { getUploadUrl } from '../services/api';
 
-export default function FacultyRow({ faculty }) {
+export default function FacultyRow({ faculty, onEdit }) {
   const navigate = useNavigate();
   const { _id, name, designation, photo, invitation } = faculty;
   const isSigned = invitation?.status === 'signed';
@@ -95,7 +95,23 @@ export default function FacultyRow({ faculty }) {
       </div>
 
       {/* ── Right: Action / Confirmation ── */}
-      <div className="shrink-0 flex items-center gap-3">
+      <div className="shrink-0 flex items-center gap-2 sm:gap-3">
+        {onEdit && (
+          <button
+            id={`edit-faculty-btn-${_id}`}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(faculty);
+            }}
+            className="p-2 rounded-full text-[#7e57c2] hover:text-[#3d1070] bg-[#fbf4e4]/80 hover:bg-[#f5e6c4] border border-[#d4a017]/35 shadow-xs transition-colors cursor-pointer"
+            title="Edit faculty member name or designation"
+            aria-label={`Edit ${name}`}
+          >
+            <Edit2 size={13} />
+          </button>
+        )}
+
         {isSigned ? (
           <button
             id={`view-card-btn-${_id}`}
