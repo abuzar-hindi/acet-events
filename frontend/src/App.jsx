@@ -7,6 +7,9 @@ import SigningPage from './pages/SigningPage';
 import ThankYouPage from './pages/ThankYouPage';
 import OrganizerPage from './pages/OrganizerPage';
 import SiteGate from './components/SiteGate';
+import DandiyaGlowTransition from './components/transitions/DandiyaGlowTransition';
+import MandalaRevealTransition from './components/transitions/MandalaRevealTransition';
+import DandiyaSwipeTransition from './components/transitions/DandiyaSwipeTransition';
 
 export default function App() {
   return (
@@ -16,19 +19,63 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
 
         {/* 2. Invitation Card Page (Dedicated uncluttered invitation experience) */}
-        <Route path="/invitation" element={<InvitationPage />} />
+        <Route
+          path="/invitation"
+          element={
+            <DandiyaGlowTransition>
+              <InvitationPage />
+            </DandiyaGlowTransition>
+          }
+        />
 
         {/* 3. Faculty Directory Page (Dedicated faculty honor roll experience) */}
         <Route path="/faculty" element={<FacultyPage />} />
 
-        {/* 4. Individual Signing Page */}
-        <Route path="/sign/:facultyId" element={<SigningPage />} />
+        {/* 4. Individual Signing Page / Sign In Page */}
+        <Route
+          path="/sign/:facultyId"
+          element={
+            <MandalaRevealTransition>
+              <SigningPage />
+            </MandalaRevealTransition>
+          }
+        />
+        <Route
+          path="/sign"
+          element={
+            <MandalaRevealTransition>
+              <SigningPage />
+            </MandalaRevealTransition>
+          }
+        />
+        <Route
+          path="/signin"
+          element={
+            <MandalaRevealTransition>
+              <SigningPage />
+            </MandalaRevealTransition>
+          }
+        />
 
         {/* 5. Personalized Thank-You & Card Experience */}
-        <Route path="/thank-you/:facultyId" element={<ThankYouPage />} />
+        <Route
+          path="/thank-you/:facultyId"
+          element={
+            <DandiyaSwipeTransition>
+              <ThankYouPage />
+            </DandiyaSwipeTransition>
+          }
+        />
 
         {/* 6. Organizer Settings and Management Interface */}
-        <Route path="/organizer" element={<OrganizerPage />} />
+        <Route
+          path="/organizer"
+          element={
+            <DandiyaSwipeTransition>
+              <OrganizerPage />
+            </DandiyaSwipeTransition>
+          }
+        />
 
         {/* Fallback — redirect anything unknown to home */}
         <Route path="*" element={<Navigate to="/" replace />} />

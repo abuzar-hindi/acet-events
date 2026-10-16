@@ -1,0 +1,578 @@
+/* src/components/transitions/transitions.css */
+/* Lightweight SVG Page Transition Animations for ACET Dandiya */
+/* Duration: 2000ms (2 seconds) for crystal clear visibility & cinematic pacing */
+
+/* ========================================================
+   1. Dandiya Glow Transition (Invitation Page)
+   Two dandiyas enter from left & right, clash at center,
+   igniting golden shockwave, glowing trails & floating particles,
+   then page content reveals smoothly.
+   ======================================================== */
+.dandiya-glow-content {
+  animation: dandiyaGlowContentReveal 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes dandiyaGlowContentReveal {
+  0%, 52% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+  }
+  75% {
+    opacity: 0.85;
+    transform: translateY(8px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dandiya-glow-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 45%, #fffdf8 0%, #fdf6e2 45%, #f9edd0 85%, #faecd0 100%);
+  animation: dandiyaGlowOverlayFade 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity;
+}
+
+@keyframes dandiyaGlowOverlayFade {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Left Dandiya entering from left side towards center */
+.dandiya-glow-left-stick {
+  transform-origin: center center;
+  animation: dandiyaLeftEnter 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaLeftEnter {
+  0% {
+    transform: translate(-380px, 80px) rotate(-40deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  45%, 52% {
+    transform: translate(-10px, 0px) rotate(-18deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-45px, -20px) rotate(-22deg);
+    opacity: 0.8;
+  }
+  95%, 100% {
+    transform: translate(-120px, -60px) rotate(-28deg);
+    opacity: 0;
+  }
+}
+
+/* Right Dandiya entering from right side towards center */
+.dandiya-glow-right-stick {
+  transform-origin: center center;
+  animation: dandiyaRightEnter 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaRightEnter {
+  0% {
+    transform: translate(380px, 80px) rotate(40deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  45%, 52% {
+    transform: translate(10px, 0px) rotate(18deg);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(45px, -20px) rotate(22deg);
+    opacity: 0.8;
+  }
+  95%, 100% {
+    transform: translate(120px, -60px) rotate(28deg);
+    opacity: 0;
+  }
+}
+
+/* Golden shockwave flash & spark burst at center clash (at ~45% - 50%) */
+.dandiya-glow-clash-burst {
+  transform-origin: center center;
+  animation: dandiyaGlowClashBurst 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaGlowClashBurst {
+  0%, 42% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  48% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  65% {
+    opacity: 0.85;
+    transform: scale(1.8);
+  }
+  85%, 100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+/* Light Trails */
+.dandiya-glow-trail-1 {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: dandiyaGlowTrail1 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dandiyaGlowTrail1 {
+  0%, 40% {
+    stroke-dashoffset: 1200;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+.dandiya-glow-trail-2 {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: dandiyaGlowTrail2 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes dandiyaGlowTrail2 {
+  0%, 44% {
+    stroke-dashoffset: 1200;
+    opacity: 0;
+  }
+  55% {
+    opacity: 0.95;
+  }
+  78% {
+    opacity: 0.75;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* Golden Particles floating upward from center */
+.dandiya-particle-1 {
+  animation: dandiyaParticleFloatA 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+.dandiya-particle-2 {
+  animation: dandiyaParticleFloatB 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 80ms forwards;
+}
+.dandiya-particle-3 {
+  animation: dandiyaParticleFloatC 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 40ms forwards;
+}
+.dandiya-particle-4 {
+  animation: dandiyaParticleFloatA 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 120ms forwards;
+}
+.dandiya-particle-5 {
+  animation: dandiyaParticleFloatB 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 60ms forwards;
+}
+.dandiya-particle-6 {
+  animation: dandiyaParticleFloatC 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 160ms forwards;
+}
+.dandiya-particle-7 {
+  animation: dandiyaParticleFloatA 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 100ms forwards;
+}
+.dandiya-particle-8 {
+  animation: dandiyaParticleFloatB 2000ms cubic-bezier(0.2, 0.8, 0.4, 1) 140ms forwards;
+}
+
+@keyframes dandiyaParticleFloatA {
+  0%, 45% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.3);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(-16px) scale(1.3);
+  }
+  78% {
+    opacity: 0.85;
+    transform: translateY(-42px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-75px) scale(0.2);
+  }
+}
+
+@keyframes dandiyaParticleFloatB {
+  0%, 46% {
+    opacity: 0;
+    transform: translate(8px, 18px) scale(0.3);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-6px, -20px) scale(1.35);
+  }
+  80% {
+    opacity: 0.8;
+    transform: translate(8px, -48px) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(14px, -80px) scale(0.2);
+  }
+}
+
+@keyframes dandiyaParticleFloatC {
+  0%, 47% {
+    opacity: 0;
+    transform: translate(-8px, 14px) scale(0.3);
+  }
+  62% {
+    opacity: 1;
+    transform: translate(8px, -15px) scale(1.2);
+  }
+  82% {
+    opacity: 0.8;
+    transform: translate(-6px, -45px) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-12px, -78px) scale(0.2);
+  }
+}
+
+
+/* ========================================================
+   2. Mandala Reveal Transition (Signing Page)
+   Symmetrical golden mandala rotating and expanding from center,
+   with expanding aperture revealing page underneath smoothly.
+   Duration: 2000ms
+   ======================================================== */
+.mandala-reveal-content {
+  animation: mandalaContentReveal 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform, clip-path;
+}
+
+@keyframes mandalaContentReveal {
+  0%, 42% {
+    opacity: 0;
+    transform: scale(0.96);
+    clip-path: circle(0% at 50% 50%);
+  }
+  65% {
+    opacity: 0.8;
+    transform: scale(0.985);
+    clip-path: circle(65% at 50% 50%);
+  }
+  88%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: circle(150% at 50% 50%);
+  }
+}
+
+.mandala-reveal-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #ffffff 0%, #fffdf6 40%, #faecd0 90%, #f7e4be 100%);
+  animation: mandalaOverlayFade 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity;
+}
+
+@keyframes mandalaOverlayFade {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.mandala-reveal-svg {
+  transform-origin: center center;
+  animation: mandalaExpandSpin 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes mandalaExpandSpin {
+  0% {
+    transform: scale(0.45) rotate(0deg);
+    opacity: 0.9;
+  }
+  38% {
+    transform: scale(0.95) rotate(14deg);
+    opacity: 1;
+  }
+  68% {
+    transform: scale(1.8) rotate(28deg);
+    opacity: 0.85;
+  }
+  92% {
+    transform: scale(3.2) rotate(42deg);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(3.6) rotate(48deg);
+    opacity: 0;
+  }
+}
+
+.mandala-aperture {
+  position: absolute;
+  width: 550px;
+  height: 550px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(254, 250, 235, 0.7) 40%, rgba(250, 236, 208, 0) 72%);
+  animation: mandalaApertureExpand 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes mandalaApertureExpand {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.95;
+  }
+  42% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  75% {
+    transform: scale(2.4);
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(3.8);
+    opacity: 0;
+  }
+}
+
+
+/* ========================================================
+   3. Dandiya Swipe Transition (Thank You Page & Organizer)
+   Swipe with synchronized page reveal: content reveals
+   according to the left-to-right swipe motion in real time!
+   Duration: 2000ms
+   ======================================================== */
+.dandiya-swipe-content {
+  animation: dandiyaSwipeContentReveal 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: clip-path, opacity;
+}
+
+/* Page reveals strictly according to the swipe across the screen */
+@keyframes dandiyaSwipeContentReveal {
+  0%, 15% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    clip-path: inset(0 92% 0 0);
+  }
+  40% {
+    clip-path: inset(0 62% 0 0);
+  }
+  65% {
+    clip-path: inset(0 28% 0 0);
+  }
+  85%, 100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+.dandiya-swipe-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 50%, #200240 0%, #13002a 55%, #0a0018 100%);
+  animation: dandiyaSwipeOverlayFade 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: opacity;
+}
+
+@keyframes dandiyaSwipeOverlayFade {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Traveling Dandiya Stick 1 crossing top-down */
+.dandiya-swipe-trail-1 {
+  transform-origin: 30% 30%;
+  animation: dandiyaTrailSweep1 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaTrailSweep1 {
+  0% {
+    transform: translate(-260px, -110px) rotate(-18deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(450px, 160px) rotate(-4deg);
+    opacity: 0;
+  }
+}
+
+/* Traveling Dandiya Stick 2 crossing bottom-up */
+.dandiya-swipe-trail-2 {
+  transform-origin: 30% 70%;
+  animation: dandiyaTrailSweep2 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaTrailSweep2 {
+  0% {
+    transform: translate(-260px, 110px) rotate(18deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(450px, -160px) rotate(4deg);
+    opacity: 0;
+  }
+}
+
+/* Golden spark clash flash when dandiyas cross */
+.dandiya-clash-flash {
+  transform-origin: center center;
+  animation: dandiyaClashFlash 2000ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaClashFlash {
+  0%, 25% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  38% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+  60% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  85%, 100% {
+    opacity: 0;
+    transform: scale(0.25);
+  }
+}
+
+/* Synchronized Light Wipe Beam moving across in step with the page reveal */
+.dandiya-light-wipe {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 55vw;
+  background: linear-gradient(90deg, rgba(212, 160, 23, 0) 0%, rgba(255, 213, 79, 0.4) 45%, rgba(233, 30, 99, 0.25) 75%, rgba(255, 111, 0, 0) 100%);
+  animation: dandiyaLightWipe 2000ms cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes dandiyaLightWipe {
+  0%, 15% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(-10vw);
+  }
+  40% {
+    transform: translateX(35vw);
+  }
+  65% {
+    transform: translateX(75vw);
+  }
+  85% {
+    transform: translateX(110vw);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(130vw);
+    opacity: 0;
+  }
+}
+
+
+/* ========================================================
+   Accessibility: prefers-reduced-motion
+   ======================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .dandiya-glow-content,
+  .mandala-reveal-content,
+  .dandiya-swipe-content {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    clip-path: none !important;
+  }
+
+  .dandiya-glow-overlay,
+  .mandala-reveal-overlay,
+  .dandiya-swipe-overlay {
+    display: none !important;
+  }
+}
