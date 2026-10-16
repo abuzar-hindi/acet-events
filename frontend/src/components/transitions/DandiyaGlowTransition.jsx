@@ -1,9 +1,3 @@
-// src/components/transitions/DandiyaGlowTransition.jsx
-// Page transition for Invitation Page: Dandiya Glow
-// Duration: 2000ms (2 seconds)
-// Feature: Both dandiyas enter from left and right side of the screen to the center,
-// clash and trigger an ambient golden glow, light trails & floating particles.
-
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import './transitions.css';
@@ -104,26 +98,6 @@ export default function DandiyaGlowTransition({ children }) {
 
             {/* Ambient Golden Glow Backing */}
             <rect width="100%" height="100%" fill="url(#dandiyaGlowRadial)" />
-
-            {/* Glowing Light Trails sweeping outward */}
-            <g filter="url(#dandiyaGlowFilter)">
-              <path
-                d="M 120,280 C 340,160 620,440 880,320"
-                stroke="url(#dandiyaTrailGrad1)"
-                strokeWidth="3.5"
-                fill="none"
-                strokeLinecap="round"
-                className="dandiya-glow-trail-1"
-              />
-              <path
-                d="M 880,260 C 660,400 340,160 120,440"
-                stroke="url(#dandiyaTrailGrad2)"
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
-                className="dandiya-glow-trail-2"
-              />
-            </g>
 
             {/* LEFT DANDIYA (Enters from Left side of screen towards center) */}
             <g className="dandiya-glow-left-stick" filter="url(#dandiyaGlowFilter)">
